@@ -1,4 +1,3 @@
-
 # 🦀 DST: Universal Deterministic Solution Algorithm (Crab Analysis)
 
 ## 🎯 Introduction and Fundamentals
@@ -50,13 +49,13 @@ The algorithm solves the game backward from the terminal states (G_1). **Global 
 
 The **T_z** label is assigned to Islands that remain unresolved after the G_n/P_x loop has stopped (Exclusion Rule).
 
-### A. Indexing z (Defensive Information)
+### A. Indexing z (Strategic Information)
 
-The z index provides an informational value about the risk of error or the minimum duration of the draw cycle.
+The z index provides an informational value about the maximum trap duration or the minimum draw cycle duration.
 
-| Scenario | Successors Include | Index Rule (Defensive) | Logic |
+| Scenario | Successors Include | Index Rule (Strategic) | Logic (Goal: Force Deep Error) |
 | :--- | :--- | :--- | :--- |
-| **Risk** | At least one P_x | **z = P_minima** | Indicates the minimum risk of loss if the player deviates from the draw path (Severity of Error). |
+| **Risk/Trap** | At least one P_x | **z = P_maxima** | Indicates the path containing the **DEEPEST** loss risk. The longest path is the one the opponent will fail to calculate (Depth of Error). |
 | **Pure Cycle** | ONLY T | **z = T_minima** | Represents the shortest path to establish the draw. |
 
 ---
@@ -146,5 +145,3 @@ The game **Cruzados** (2x2, H/V/D movement, diagonal KO) is a perfect example to
 ## License
 
 This project is under the **MIT License**. You may use, copy, modify, and distribute the code provided the original copyright notice is included.
-
-
