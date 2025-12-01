@@ -1,60 +1,121 @@
-# 💻 DST: Universal Algorithm for Alternating-Turn Game Resolution
-## Gn/Px/Tz Framework (Backward Induction Method)
+# 🦀 DST: Algoritmo Universal de Solución Determinística (Análisis Cangrejo)
+
+## 🎯 Introducción y Fundamentos
+
+El **Algoritmo de Solución Determinística (DST)** es un marco analítico universal, diseñado para resolver completamente cualquier juego de suma cero, de información perfecta y de turnos alternos. Este método, conocido como **Análisis Cangrejo** (Inducción Hacia Atrás), etiqueta cada estado del juego con una solución forzada: **Victoria (Gn), Derrota (Px), o Tablas (Tz)**.
+
+El objetivo del algoritmo no es solo encontrar la solución, sino también determinar el **camino de máxima resistencia** que debe anticipar el jugador para garantizar la victoria o minimizar la derrota.
 
 ---
 
-## 1. Executive Summary (Thesis)
+## 1. Estructura y Notación
 
-This document presents a **low-complexity, mathematical-logic framework** for the **deterministic and optimal solution** of any perfect-information, zero-sum board game. The core methodology, called **Backward Induction** (or Crab Analysis), allows for tagging all legal states with **Depth/Distance** encoding (Win, Loss, or Draw), guaranteeing optimal decision-making with maximum temporal efficiency.
+### A. La Isla (Estado Único)
+Una **Isla** es un nodo único en el grafo de juego, representando una configuración de tablero y el turno. Su clave se define para mantener la consistencia del turno y manejar ciclos:
 
----
+> Clave Única = ID Progresivo de la Foto + Letra del Jugador que **Acaba de Mover**
 
-## 2. Data Modeling: Universal Graph Structure
-
-The solution relies on building a **Universal Game Graph** that eliminates turn ambiguity.
-
----
-
-## 3. The Central Algorithm: Gn/Px/Tz Propagation Rules
-
-The process starts from the terminal states (n=0) and works backward, applying simple propagation rules.
-
-### 3.1. Reciprocal Minimax Rule (G/P)
-
-* P(n) of the opponent ==> G(n+1) for the current player
-* G(n) of the opponent ==> P(n+1) for the current player
-
-### 3.2. Draw Rule (Tz)
-
-A Node is **Tz** if the player cannot force a win (Gn) but can avoid a loss (Px) by choosing an Edge that leads to another Tz state.
+Esto implica que el **color de la Isla** indica al jugador que acaba de llegar, y el **turno siguiente** es del color opuesto (ej: '1B' indica que el Blanco movió, y ahora le toca al Negro).
 
 ---
 
-## 4. Decision Rule (Optimal Move)
+## 2. Propagación Gn/Px (El Bucle de Inducción)
 
-The choice is based on the hierarchy **G > T > P**, prioritizing the fastest path (lowest n) within the chosen category.
+El algoritmo se resuelve desde los estados terminales hacia atrás (G1). La **Acomodación Global** (actualización de la Base de Tablas) es crucial después de cada asignación Gn o Px.
 
----
-
-## 5. 🏆 Proof of Universality (Solved Examples)
-
-### 5.1. G/P Proof (Tokens Game)
-
-**Game:** 2 tokens (11), only 1 token removed per turn.
-**Algorithm Solution:** The initial position is a **P-Position** (Losing).
-11B = P2B
-**Conclusion:** The algorithm proves that the White Player is forced to lose in 2 moves if Black plays optimally.
-
-### 5.2. Tz Proof (Boxers Game)
-
-**Game:** 3x3 board, White Boxer vs. Black Boxer (N and B in opposite corners). Movement: 1 step (straight or diagonal). K.O.: Diagonal only.
-**Algorithm Solution:** Game symmetry and defense rules force players to avoid the Px state.
-Initial State = Tz
-**Conclusion:** The algorithm proves its ability to solve games with forced draws, where the Tie (Tz) is the only optimal solution.
+| Asignación | Condición de Sucesores | Regla de Índice (Índice en el Antecesor) | Lógica (Máxima Resistencia) |
+| :--- | :--- | :--- | :--- |
+| **Pérdida (Px)** | **TODOS** los sucesores son **Gn**. | **x = G_mínima + 1** | El oponente (ganador) elegirá la ruta Gn más corta para finalizar la partida lo más rápido posible. |
+| **Victoria (Gn)** | **TODOS** los sucesores son **Px**. | **n = P_máxima + 1** | El jugador debe anticipar que el oponente (perdedor) elegirá la ruta Px más larga para maximizar la duración del juego. |
 
 ---
 
-## 6. License and Authorship
+## 3. Asignación Tz (Tablas)
 
-* **Authors:** **Alex** and **Logos**
-* **License:** This project is distributed under the MIT license.
+La etiqueta **Tz** se asigna a las Islas que quedan sin resolver después de que el bucle Gn/Px se ha detenido (Regla de Exclusión).
+
+### A. Indexación de $z$ (Información Defensiva)
+
+El índice $z$ proporciona un valor informativo sobre el riesgo de error o la duración mínima del ciclo de tablas.
+
+| Escenario | Sucesores Incluyen | Regla de Índice (Defensiva) | Lógica |
+| :--- | :--- | :--- | :--- |
+| **Riesgo** | Al menos una Px | **z = P_mínima** | Indica el riesgo mínimo de pérdida si el jugador se desvía del camino de tablas (Gravedad del Error). |
+| **Ciclo Puro** | SOLO T | **z = T_mínima** | Representa el camino más corto para establecer las tablas (para mantener la coherencia con el principio de juego óptimo en T). |
+
+---
+
+## 4. La Jerarquía de Prioridades (Movimiento Óptimo)
+
+La decisión del jugador al momento de moverse se basa en una estricta jerarquía de prioridades que define el juego óptimo:
+
+1.  **Prioridad Máxima: Ganar (G)**
+    * **Acción:** Elegir la **G** con el valor $n$ **MÁS BAJO** (ganar más rápido).
+2.  **Prioridad Intermedia: Tablas (T)**
+    * **Acción:** Elegir la **T** con el valor $z$ **MÁS ALTO** para maximizar la duración del empate.
+3.  **Prioridad Mínima: Perder (P)**
+    * **Acción:** Elegir la **P** con el valor $x$ **MÁS ALTO** para minimizar la velocidad de la derrota.
+
+---
+
+## 5. Pseudocódigo Universal del DST
+
+Este es el algoritmo central que implementa la teoría anterior. 
+
+```pseudocode
+// ----------------------------------------------------------------------
+// ESTRUCTURAS GLOBALES
+// ----------------------------------------------------------------------
+BASE_DE_TABLAS = Diccionario<Clave_Isla, Solucion> // Almacena (1N : G3, 2B : P4, etc.)
+CONTEO_FOTOS = 0 // Contador progresivo para ID único de la 'Foto'
+
+// ----------------------------------------------------------------------
+// FUNCIONES DEL DST
+// ----------------------------------------------------------------------
+
+FUNCION Resolver_DST(Estado_Inicial)
+    // 1. Construcción del Grafo y Asignación de IDs
+    Expandir_Grafo(Estado_Inicial)
+    
+    // 2. Solución de Victoria/Derrota (Gn y Px)
+    Bucle_Gn_Px() 
+    
+    // 3. Solución de Tablas (Tz)
+    Bucle_Tz()
+
+    RETORNA BASE_DE_TABLAS[Estado_Inicial] 
+FIN FUNCION
+
+// Construye la estructura de la Isla y sus Puentes (utiliza la función game-specific de Generar_Puentes_de_Salida)
+FUNCION Expandir_Grafo(Serializacion_Actual)
+    // ... Lógica para asignar el ID progresivo y la Clave Única ...
+    // ... Lógica recursiva para explorar todos los Puentes y construir el GRAFO_INVERSO ...
+FIN FUNCION
+
+// Aplica las reglas Gn/Px (P_max + 1, G_min + 1) de forma iterativa y aplica Acomodación Global.
+FUNCION Bucle_Gn_Px()
+    MIENTRAS Haya_Cambios_En_BASE_DE_TABLAS
+        // ... Lógica de Propagación Gn y Px ...
+        // ... Si se asigna, aplicar Acomodación (actualizar antecesores) ...
+    FIN MIENTRAS
+FIN FUNCION
+
+// Resuelve las Tz usando la Regla de Exclusión y el índice z (P_minima o T_minima).
+FUNCION Bucle_Tz()
+    MIENTRAS Haya_Cambios_En_Tz_Asignados
+        // ... Lógica de Propagación Tz y asignación del índice z ...
+    FIN MIENTRAS
+FIN FUNCION
+
+---
+
+## Autores
+
+* Alex
+* Logos
+
+---
+
+## Licencia
+
+Este proyecto está bajo la **Licencia MIT**. Puedes usar, copiar, modificar y distribuir el código siempre y cuando se incluya la nota de copyright original.
