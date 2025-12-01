@@ -115,6 +115,8 @@ FUNCTION Loop_Tz()
     END WHILE
 END FUNCTION
 
+```
+
 ## 6. Pragmatic Implementation and Limited Horizon
 
 For games with massive graphs (like Chess), the DST is applied using a **Limited Horizon Search** with an Evaluation Function (E).
