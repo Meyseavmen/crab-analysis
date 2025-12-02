@@ -92,10 +92,6 @@ The player's decision when moving is based on a strict priority hierarchy that d
 
 This is the central algorithm that implements the theory above. 
 
-## 5. Universal DST Pseudocode
-
-This is the central algorithm that implements the theory above.
-
 ```pseudocode
 // ----------------------------------------------------------------------
 // GLOBAL STRUCTURES
