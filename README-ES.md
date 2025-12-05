@@ -1,4 +1,4 @@
-
+7
 
 
 # 🦀 DST: Algoritmo Universal de Solución Determinística (Análisis Cangrejo)
